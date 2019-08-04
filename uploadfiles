@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+
+$usrhst = $argv[1];
+$files = array_slice($argv, 2);
+
+if (preg_match('/\w+@[\w\.]+:[\w\/. ]+\//', $usrhst) != 1 || count($files) < 1) {
+    echo 'Usage:
+php uploadfiles <user>@<host>:</destination/folder/> <files...>';
+    exit;
+}
+
+foreach ($files as $file) {
+    // exec('echo ' . $file, $out);
+    $cmd = "scp -v -v -v ./$file $usrhst/$file";
+    printf("executing `%s`\n", $cmd);
+    exec($cmd, $out, $ret);
+    printf("---> command `%s` exited code: %d\n", $cmd, $ret);
+    // foreach ($out as $line) {
+    //     printf("%s\n", $line);
+    // }
+}
